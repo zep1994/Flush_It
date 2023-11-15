@@ -36,5 +36,9 @@ namespace Flush_It_API.Models
         public bool? Bread { get; set; } = false;
         public bool? ArtificialAdditives { get; set; } = false;
         public bool? CarbonatedBeverage { get; set; } = false;
+
+        //Relationships
+        public List<FoodActivity> FoodActivities { get; set; }
+
     }
 }
