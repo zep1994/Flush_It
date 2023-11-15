@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Flush_It_API.Models
 {
@@ -7,19 +6,11 @@ namespace Flush_It_API.Models
     {
         [Key]
         public int Id { get; set; }
-
-        [Required]
-        public DateTime Date { get; set; }
-
+        public DateTime Date {  get; set; }
+        public List<Food>? Foods { get; set; }
         public bool HadAttack { get; set; } = false;
-
         public bool IsHealthyDay { get; set; } = true;
-
-        [ForeignKey("UserId")]
-        public int UserId { get; set; }
-
-        public User? User { get; set; }  // Navigation property to User
-
         public List<FoodActivity> FoodActivities { get; set; }
+        public int UserId { get; internal set; }
     }
 }
