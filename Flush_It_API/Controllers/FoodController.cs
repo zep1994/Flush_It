@@ -2,6 +2,7 @@
 using Flush_It_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace Flush_It_API.Controllers
 {
@@ -17,6 +18,7 @@ namespace Flush_It_API.Controllers
         }
 
 
+        #region CRUD
         [HttpGet]
         public IActionResult GetFoodItems()
         {
@@ -88,5 +90,81 @@ namespace Flush_It_API.Controllers
 
             return NoContent();
         }
+
+        #endregion
+
+        #region Search
+
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetFoodByName(string name)
+        {
+            var food = await _context.Food
+                .FirstOrDefaultAsync(f => EF.Functions.ILike(f.Name, "%" + name + "%"));
+
+            if (food == null)
+            {
+                return NotFound($"Food item with name '{name}' not found.");
+            }
+
+            return CheckFood(food);
+        }
+
+        [HttpGet("check")]
+        public IActionResult CheckFood([FromBody] Food fooditem)
+        {
+            if (fooditem == null)
+            {
+                return BadRequest("Food item not provided.");
+            }
+
+            var food = _context.Food.Find(fooditem.Id);
+
+            if (food == null)
+            {
+                return NotFound("Food item not found.");
+            }
+
+            var response = new StringBuilder();
+
+            switch (true)
+            {
+                // Check TotalFat
+                case var fatCondition when food.TotalFat.HasValue && food.TotalFat > 20:
+                    response.AppendLine("This food item contains greater than 20 of Total Fat, so we recommend staying away for now.");
+                    break;
+
+                // Example: Check if the food is spicy
+                case var spicyCondition when food.Spicy.HasValue && food.Spicy == true:
+                    response.AppendLine("This food item is spicy.");
+                    break;
+
+                // Example: Check if the food is fried
+                case var friedCondition when food.Fried.HasValue && food.Fried == true:
+                    response.AppendLine("This food item is fried.");
+                    break;
+
+                // Example: Check if the food is Bread
+                case var breadCondition when food.Bread.HasValue && food.Bread == true:
+                    response.AppendLine("This food item contains bread.");
+                    break;
+
+                // Example: Check if the food is fried
+                case var glutenCondition when food.Gluten.HasValue && food.Gluten == true:
+                    response.AppendLine("This food contains Gluten.");
+                    break;
+
+                // Example: Check if the food is Fiber
+                case var fiberCondition when food.Fiber.HasValue && food.Fiber > 2:
+                    response.AppendLine("This food contains fiber and passed the other test, so you should be good to eat this.");
+                    break;
+
+                // If none of the conditions is met, return a generic response
+                default:
+                    response.AppendLine("Nothing Special to see here. Perhaps try to find a more nutrient dense food?");
+                    break;
+            }
+                    return Ok(response.ToString());
+        }
+        #endregion
     }
 }
