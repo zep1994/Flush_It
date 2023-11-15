@@ -1,0 +1,59 @@
+﻿@page
+@model Flush_It_WebClient.Pages.Activities.CreateActivityModel
+@{
+    ViewData["Title"] = "Create Activity";
+}
+
+@if (!ModelState.IsValid)
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Validation errors:</strong>
+        <ul>
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+<h2>Create Activity</h2>
+
+<form method="post">
+    <div>
+        <label asp-for="Activity.Date"></label>
+        <input asp-for="Activity.Date" type="datetime-local" />
+        <span asp-validation-for="Activity.Date"></span>
+    </div>
+
+    <!-- Input field for multiple food names -->
+    <div>
+        <label asp-for="Activity.FoodNames"></label>
+        <input asp-for="Activity.FoodNames" />
+        <span asp-validation-for="Activity.FoodNames"></span>
+        <small>Separate multiple food names with commas (e.g., Apple, Banana)</small>
+    </div>
+
+    <div>
+        <label>
+            <input asp-for="Activity.HadAttack" type="checkbox" />
+            Had Attack
+        </label>
+    </div>
+
+    <div>
+        <label>
+            <input asp-for="Activity.IsHealthyDay" type="checkbox" />
+            Is Healthy Day
+        </label>
+    </div>
+
+    <button type="submit">Create Activity</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

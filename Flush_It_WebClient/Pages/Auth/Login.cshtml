@@ -1,0 +1,89 @@
+﻿@page
+@model Flush_It_WebClient.Pages.Auth.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+@if (!ModelState.IsValid)
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Validation errors:</strong>
+        <ul>
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+@if (TempData["RegistrationSuccess"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["RegistrationSuccess"]
+    </div>
+}
+
+<h1>Login</h1>
+
+<form id="loginForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="button" onclick="handleLoginFormSubmit()">Login</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<script>
+    // Function to store the token in localStorage
+    function storeToken(token) {
+        localStorage.setItem('token', token);
+        console.log(token)
+    }
+
+    // Function to handle the form submission
+    function handleLoginFormSubmit() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        console.log(username, password);
+        // Assuming you are using fetch to make a POST request to the login endpoint
+        fetch('https://localhost:7080/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.token) {
+                    // Store the token in localStorage
+                    storeToken(data.token);
+
+                    // Redirect to Index with a query parameter
+                    window.location.href = '/Index?loginSuccess=true';
+                } else {
+                    // Handle login failure
+                    console.log('Login failed:', data.message);
+                }
+            })
+            .catch(error => console.log('Error:', error));
+    }
+</script>

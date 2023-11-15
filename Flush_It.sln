@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flush_It_API", "Flush_It_API\Flush_It_API.csproj", "{0530CD0B-5115-4061-B09F-3F7771C1220A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flush_It_WebClient", "Flush_It_WebClient\Flush_It_WebClient.csproj", "{F9B2E048-982E-44F5-8EF2-9767AA4D7E58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0530CD0B-5115-4061-B09F-3F7771C1220A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0530CD0B-5115-4061-B09F-3F7771C1220A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0530CD0B-5115-4061-B09F-3F7771C1220A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9B2E048-982E-44F5-8EF2-9767AA4D7E58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B2E048-982E-44F5-8EF2-9767AA4D7E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9B2E048-982E-44F5-8EF2-9767AA4D7E58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9B2E048-982E-44F5-8EF2-9767AA4D7E58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

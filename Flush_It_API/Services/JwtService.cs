@@ -14,16 +14,16 @@ namespace Flush_It_API.Services
             _configuration = configuration;
         }
 
-        public string GenerateToken(string userId, string username)
+        public string GenerateToken(int userId, string username)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                new Claim(ClaimTypes.NameIdentifier, userId),
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Name, username),
             }),
                 Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpireMinutes"])),
@@ -37,7 +37,7 @@ namespace Flush_It_API.Services
         public ClaimsPrincipal ValidateToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
 
             var validationParameters = new TokenValidationParameters
             {
@@ -46,7 +46,7 @@ namespace Flush_It_API.Services
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero // This is important for token expiration check
+                ClockSkew = TimeSpan.Zero 
             };
 
             SecurityToken validatedToken;
