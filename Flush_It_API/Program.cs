@@ -23,6 +23,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("/", () =>
+{
+    return Results.Ok();
+});
+
 //GET
 app.MapGet("api/ibs_count", async (AppDbContext context) =>
 {
