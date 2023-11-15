@@ -22,23 +22,25 @@ namespace Flush_It_API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configure your relationships and constraints here
+
             modelBuilder.Entity<FoodActivity>()
                 .HasKey(fa => new { fa.FoodId, fa.ActivityId });
 
             modelBuilder.Entity<FoodActivity>()
                 .HasOne(fa => fa.Food)
-                .WithMany(food => food.FoodActivities)
-                .HasForeignKey(fa => fa.FoodId);
+                .WithMany(f => f.FoodActivities)
+                .HasForeignKey(fa => fa.FoodId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<FoodActivity>()
                 .HasOne(fa => fa.Activity)
-                .WithMany(activity => activity.FoodActivities)
-                .HasForeignKey(fa => fa.ActivityId);
+                .WithMany(a => a.FoodActivities)
+                .HasForeignKey(fa => fa.ActivityId)
+                .OnDelete(DeleteBehavior.Restrict); 
 
-            // Any additional configurations...
 
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

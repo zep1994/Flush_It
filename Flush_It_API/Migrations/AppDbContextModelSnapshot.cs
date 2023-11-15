@@ -39,7 +39,12 @@ namespace Flush_It_API.Migrations
                     b.Property<bool>("IsHealthyDay")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Activities");
                 });
@@ -51,9 +56,6 @@ namespace Flush_It_API.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ActivityId")
-                        .HasColumnType("integer");
 
                     b.Property<bool?>("Alcohol")
                         .HasColumnType("boolean");
@@ -139,8 +141,6 @@ namespace Flush_It_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActivityId");
-
                     b.ToTable("Food");
                 });
 
@@ -200,11 +200,15 @@ namespace Flush_It_API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Flush_It_API.Models.Food", b =>
+            modelBuilder.Entity("Flush_It_API.Models.Activity", b =>
                 {
-                    b.HasOne("Flush_It_API.Models.Activity", null)
-                        .WithMany("Foods")
-                        .HasForeignKey("ActivityId");
+                    b.HasOne("Flush_It_API.Models.User", "User")
+                        .WithMany("Activities")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Flush_It_API.Models.FoodActivity", b =>
@@ -212,13 +216,13 @@ namespace Flush_It_API.Migrations
                     b.HasOne("Flush_It_API.Models.Activity", "Activity")
                         .WithMany("FoodActivities")
                         .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Flush_It_API.Models.Food", "Food")
                         .WithMany("FoodActivities")
                         .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Activity");
@@ -229,13 +233,16 @@ namespace Flush_It_API.Migrations
             modelBuilder.Entity("Flush_It_API.Models.Activity", b =>
                 {
                     b.Navigation("FoodActivities");
-
-                    b.Navigation("Foods");
                 });
 
             modelBuilder.Entity("Flush_It_API.Models.Food", b =>
                 {
                     b.Navigation("FoodActivities");
+                });
+
+            modelBuilder.Entity("Flush_It_API.Models.User", b =>
+                {
+                    b.Navigation("Activities");
                 });
 #pragma warning restore 612, 618
         }

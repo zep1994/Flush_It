@@ -2,6 +2,7 @@
 using Flush_It_API.Models;
 using Flush_It_API.Services;
 using Flush_It_API.Utilities;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -16,6 +17,7 @@ namespace Flush_It_API.Controllers
         private readonly AppDbContext _context;
         private readonly IBCryptHasher _bcryptHasher;
         private readonly IJwtService _jwtService;
+
 
         public AuthController(AppDbContext context, IBCryptHasher bcryptHasher, IJwtService jwtService)
         {
@@ -52,7 +54,7 @@ namespace Flush_It_API.Controllers
                 await _context.SaveChangesAsync();
 
                 // Generate JWT token
-                var token = _jwtService.GenerateToken(user.Id.ToString(), user.Username);
+                var token = _jwtService.GenerateToken(user.Id, user.Username);
 
                 // Return token in response
                 return Ok(new { Token = token });
@@ -84,7 +86,7 @@ namespace Flush_It_API.Controllers
                 }
 
                 // Generate JWT token
-                var token = _jwtService.GenerateToken(user.Id.ToString(), user.Username);
+                var token = _jwtService.GenerateToken(user.Id, user.Username);
 
                 // Return token in response
                 return Ok(new { Token = token });
