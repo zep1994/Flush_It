@@ -11,6 +11,7 @@ namespace Flush_It_API.Data
         }
         public DbSet<IbsCount> IbsCount => Set<IbsCount>();
         public DbSet<Food> Food => Set<Food>();
+        public DbSet<User> Users => Set<User>();
 
     }
 }
