@@ -36,6 +36,8 @@ namespace Flush_It_WebClient.Pages.Auth
 
                 if (response.IsSuccessStatusCode)
                 {
+                    TempData["LoginSuccessful"] = "Login successful.";
+
                     return RedirectToPage("/Index");
                 }
                 else

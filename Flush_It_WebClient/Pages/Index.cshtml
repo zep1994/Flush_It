@@ -4,6 +4,13 @@
     ViewData["Title"] = "Home page";
 }
 
+@if (!string.IsNullOrEmpty(Model.LoginSuccessMessage))
+{
+    <div class="alert alert-success">
+        @Model.LoginSuccessMessage
+    </div>
+}
+
 <div class="text-center">
     <h1 class="display-4">Flushed</h1>
     <p>Flushing It Down Town.</p>

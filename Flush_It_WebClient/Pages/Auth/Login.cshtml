@@ -4,6 +4,22 @@
     ViewData["Title"] = "Login";
 }
 
+@if (!ModelState.IsValid)
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Validation errors:</strong>
+        <ul>
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
 @if (TempData["RegistrationSuccess"] != null)
 {
     <div class="alert alert-success">
@@ -31,13 +47,14 @@
     // Function to store the token in localStorage
     function storeToken(token) {
         localStorage.setItem('token', token);
+        console.log(token)
     }
 
     // Function to handle the form submission
     function handleLoginFormSubmit() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-
+        console.log(username, password);
         // Assuming you are using fetch to make a POST request to the login endpoint
         fetch('https://localhost:7080/api/auth/login', {
             method: 'POST',
@@ -60,8 +77,8 @@
                     // Store the token in localStorage
                     storeToken(data.token);
 
-                    // Redirect or perform other actions as needed
-                    window.location.href = '/'; // Replace with your desired URL
+                    // Redirect to Index with a query parameter
+                    window.location.href = '/Index?loginSuccess=true';
                 } else {
                     // Handle login failure
                     console.log('Login failed:', data.message);

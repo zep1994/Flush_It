@@ -5,9 +5,11 @@ using System.Security.Claims;
 using Flush_It_API.Models;
 using System.IdentityModel.Tokens.Jwt;
 using Flush_It_WebClient.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Flush_It_API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ActivityController : ControllerBase
